@@ -23,6 +23,7 @@ int main()
     ifstream fin;
     fin.open("dummy.csv");
     string read, id, artist, album, genre, song;
+    bool notfound = true;
     if (!fin)
     {
         cout << "file could not be opened" << endl;
@@ -34,6 +35,7 @@ int main()
             getline(fin, read, ',');
             if (read == search)
             {
+                notfound = false;
                 id = read;
                 getline(fin, artist, ',');
                 getline(fin, album, ',');
@@ -44,16 +46,24 @@ int main()
             {
                 getline(fin, read);
             }
+
         }
-        cout << "id- " << id;
-        cout << "\n";
-        cout << "artist- " << artist;
-        cout << "\n";
-        cout << "album- " << album;
-        cout << "\n";
-        cout << "song- " << song;
-        cout << "\n";
-        cout << "genre- " << genre;
+        if(notfound)
+        {
+            cout<<"Song not found"<<endl;
+        }
+        else{
+                    
+            cout << "id- " << id;
+            cout << "\n";
+            cout << "artist- " << artist;
+            cout << "\n";
+            cout << "album- " << album;
+            cout << "\n";
+            cout << "song- " << song;
+            cout << "\n";
+            cout << "genre- " << genre;
+        }
     }
 
     fin.close();
