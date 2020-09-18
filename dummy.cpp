@@ -18,7 +18,7 @@ struct info
 int main()
 {
     string search;
-    cout << "Enter the ID to be searched for:" << endl;
+    cout << "Enter the name of the song to be searched for:" << endl;
     cin >> search;
     ifstream fin;
     fin.open("dummy.csv");
@@ -36,26 +36,22 @@ int main()
             if (read == search)
             {
                 notfound = false;
-                id = read;
+                song = read;
                 getline(fin, artist, ',');
                 getline(fin, album, ',');
-                getline(fin, song, ',');
                 getline(fin, genre, '\n');
             }
             else
             {
                 getline(fin, read);
             }
-
         }
-        if(notfound)
+        if (notfound)
         {
-            cout<<"Song not found"<<endl;
+            cout << "Song not found" << endl;
         }
-        else{
-                    
-            cout << "id- " << id;
-            cout << "\n";
+        else
+        {
             cout << "artist- " << artist;
             cout << "\n";
             cout << "album- " << album;
