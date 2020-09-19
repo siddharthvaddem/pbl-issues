@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <conio.h>
 #include <stdlib.h>
@@ -96,6 +95,8 @@ int main()
             cout << "genre- " << genre;
         }
     }
+
+
     fin.close();*/
     return 0;
 }
