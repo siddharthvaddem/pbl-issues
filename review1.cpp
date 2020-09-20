@@ -31,7 +31,7 @@ void display_record_menu();
 void display_all_records();
 void play_playlist_menu();
 void readFile();
-void filter_records(int, string);
+void filter_records();
 int main()
 {
 lbl:
@@ -104,11 +104,11 @@ lbl:
 void display_record_menu()
 {
 lbl:
-    int subchoice, subchoice2;
-    string input;
+    int subchoice;
+
     cout << "Display records" << endl;
     cout << "1>Display all records" << endl;
-    cout << "2>Sort" << endl;
+    cout << "2>Filter" << endl;
     cout << "3>Return to main menu" << endl;
     cout << "Enter your choice:";
     cin >> subchoice;
@@ -123,18 +123,7 @@ lbl:
         display_all_records();
         break;
     case 2: //subfunction2
-    lbl2:
-        cout << "Filter by -" << endl;
-        cout << "1>Artist " << endl;
-        cout << "2>Song  " << endl;
-        cout << "3>Album " << endl;
-        cout << "4>Genre " << endl;
-        cout << " Enter your choice " << endl;
-        cin >> subchoice2;
-        cout << "Enter your search term -";
-        cin >> input;
-        filter_records(subchoice2, input);
-        goto lbl2;
+        filter_records();
         break;
 
     case 3:
@@ -145,6 +134,194 @@ lbl:
     }
     goto lbl;
 }
+
+void filter_records()
+{
+    string search;
+    int Subchoice;
+    string read;
+    ifstream fin;
+    fin.open("dummy.csv");
+    bool notfound = true;
+    if (!fin)
+    {
+        cout << "file could not be opened" << endl;
+    }
+    else
+    {
+        
+    lbl2:
+        int i = 0, a = 0;
+        cout << "Filter by -" << endl;
+        cout << "1>Artist " << endl;
+        cout << "2>Song  " << endl;
+        cout << "3>Album " << endl;
+        cout << "4>Genre " << endl;
+        cout << "5>Return to previous menu"<<endl;
+        cout << "Enter your choice: " ;
+        cin >> Subchoice;
+        cout << endl;
+        switch (Subchoice)
+        {
+        case 1: //filter by artist
+            cout << "Enter the name of the artist:";
+            cin >> search;
+            cout << endl;
+            while (!fin.eof())
+            {
+
+                getline(fin, temp.song[i], ',');
+                getline(fin, temp.album[i], ',');
+                getline(fin, read, ',');
+                if (read == search)
+                {
+
+                    notfound = false;
+                    filtered.song[i] = temp.song[i];
+                    filtered.album[i] = temp.album[i];
+                    filtered.artist[i] = read;
+                    getline(fin, temp.genre[i], '\n');
+                    filtered.genre[i] = temp.genre[i];
+                    if (a == 0)
+                    {
+                        cout << " Results for " << filtered.artist[i] << "-" << endl;
+                        cout << "song" << setw(30) << "album" << setw(30) << "genre" << endl;
+                        a++;
+                    }
+                    cout << filtered.song[i] << setw(30) << filtered.album[i] << setw(30) << filtered.genre[i] << endl;
+                }
+                else
+                {
+                    getline(fin, trash, '\n');
+                }
+                i++;
+            }
+            if (notfound)
+            {
+                cout << "No results found" << endl;
+            }
+            break;
+        case 2: //filter by song
+            cout << "Enter the name of the song:";
+            cin >> search;
+            cout << endl;
+            while (!fin.eof())
+            {
+
+                getline(fin, read, ',');
+                if (read == search)
+                {
+
+                    notfound = false;
+                    filtered.song[i] = read;
+                    getline(fin, temp.album[i], ',');
+                    getline(fin, temp.artist[i], ',');
+                    getline(fin, temp.genre[i], '\n');
+                    filtered.album[i] = temp.album[i];
+                    filtered.artist[i] = temp.artist[i];
+                    filtered.genre[i] = temp.genre[i];
+                    if (a == 0)
+                    {
+                        cout << "Results for " << filtered.song[i] << "- " << endl;
+                        cout << "artist" << setw(30) << "album" << setw(30) << "genre" << endl;
+                        a++;
+                    }
+                    cout << filtered.artist[i] << setw(30) << filtered.album[i] << setw(30) << filtered.genre[i] << endl;
+                }
+                else
+                {
+                    getline(fin, trash, '\n');
+                }
+                i++;
+            }
+            if (notfound)
+            {
+                cout << "No results found" << endl;
+            }
+            break;
+        case 3: //filter by album
+            cout << "Enter the name of the album:";
+            cin >> search;
+            cout << endl;
+            while (!fin.eof())
+            {
+                getline(fin, temp.song[i], ',');
+                getline(fin, read, ',');
+                if (read == search)
+                {
+
+                    notfound = false;
+                    filtered.song[i] = temp.song[i];
+                    filtered.album[i] = read;
+                    getline(fin, temp.artist[i], ',');
+                    getline(fin, temp.genre[i], '\n');
+                    filtered.artist[i] = temp.artist[i];
+                    filtered.genre[i] = temp.genre[i];
+                    if (a == 0)
+                    {
+                        cout << "Results for the album " << filtered.album[i] << "- " << endl;
+                        a++;
+                    }
+                    cout << filtered.song[i] << endl;
+                }
+                else
+                {
+                    getline(fin, trash, '\n');
+                }
+                i++;
+            }
+            if (notfound)
+            {
+                cout << "No results found" << endl;
+            }
+            break;
+        case 4: //filter by genre
+            cout << "Enter the genre you would like to search:";
+            cin >> search;
+            cout << endl;
+            while (!fin.eof())
+            {
+                getline(fin, temp.song[i], ',');
+                getline(fin, temp.album[i], ',');
+                getline(fin, temp.artist[i], ',');
+                getline(fin, read, '\n');
+                if (read == search)
+                {
+                    notfound = false;
+                    filtered.genre[i] = read;
+                    filtered.song[i] = temp.song[i];
+                    filtered.artist[i] = temp.artist[i];
+                    filtered.album[i] = temp.album[i];
+                    if (a == 0)
+                    {
+                        cout << "Results for the genre " << filtered.genre[i] << "- " << endl;
+                        cout << "Song" << setw(30) << "artist" << endl;
+                        a++;
+                    }
+                    cout << filtered.song[i] << setw(30) << filtered.artist[i] << endl;
+                }
+                else
+                {
+                    getline(fin, trash, '\n');
+                }
+                i++;
+            }
+            if (notfound)
+            {
+                cout << "No results found" << endl;
+            }
+            break;
+        case 5:
+            fin.close();
+            return;
+            break;
+        default:
+            cout << "invalid input" << endl;
+        }
+        goto lbl2;
+    }
+}
+
 void play_playlist_menu()
 {
 lbl:
@@ -206,163 +383,5 @@ void display_all_records()
     for (int i = 0; i < size; i++)
     {
         cout << data.song[i] << setw(30) << data.album[i] << setw(30) << data.artist[i] << setw(30) << data.genre[i] << endl;
-    }
-}
-void filter_records(int subchoice2, string input)
-{
-    string search = input;
-    int Subchoice = subchoice2;
-    string read;
-    ifstream fin;
-    fin.open("dummy.csv");
-    bool notfound = true;
-    if (!fin)
-    {
-        cout << "file could not be opened" << endl;
-    }
-    else
-    {
-        int i = 0, a = 0;
-        switch (Subchoice)
-        {
-        case 1: //filter by artist
-            while (!fin.eof())
-            {
-
-                getline(fin, temp.song[i], ',');
-                getline(fin, temp.album[i], ',');
-                getline(fin, read, ',');
-                if (read == search)
-                {
-
-                    notfound = false;
-                    filtered.song[i] = temp.song[i];
-                    filtered.album[i] = temp.album[i];
-                    filtered.artist[i] = read;
-                    getline(fin, temp.genre[i], '\n');
-                    filtered.genre[i] = temp.genre[i];
-                    if (a == 0)
-                    {
-                        cout << " Results for " << filtered.artist[i] << "-" << endl;
-                        cout << "song" << setw(30) << "album" << setw(30) << "genre" << endl;
-                        a++;
-                    }
-                    cout << filtered.song[i] << setw(30) << filtered.album[i] << setw(30) << filtered.genre[i] << endl;
-                }
-                else
-                {
-                    getline(fin, trash, '\n');
-                }
-                i++;
-            }
-            if (notfound)
-            {
-                cout << "No results found" << endl;
-            }
-            break;
-        case 2: //filter by song
-            while (!fin.eof())
-            {
-
-                getline(fin, read, ',');
-                if (read == search)
-                {
-
-                    notfound = false;
-                    filtered.song[i] = read;
-                    getline(fin, temp.album[i], ',');
-                    getline(fin, temp.artist[i], ',');
-                    getline(fin, temp.genre[i], '\n');
-                    filtered.album[i] = temp.album[i];
-                    filtered.artist[i] = temp.artist[i];
-                    filtered.genre[i] = temp.genre[i];
-                    if (a == 0)
-                    {
-                        cout << "Results for " << filtered.song[i] << "- " << endl;
-                        cout << "artist" << setw(30) << "album" << setw(30) << "genre" << endl;
-                        a++;
-                    }
-                    cout << filtered.artist[i] << setw(30) << filtered.album[i] << setw(30) << filtered.genre[i] << endl;
-                }
-                else
-                {
-                    getline(fin, trash, '\n');
-                }
-                i++;
-            }
-            if (notfound)
-            {
-                cout << "No results found" << endl;
-            }
-            break;
-        case3: //filter by album
-            while (!fin.eof())
-            {
-                getline(fin, temp.song[i], ',');
-                getline(fin, read, ',');
-                if (read == search)
-                {
-
-                    notfound = false;
-                    filtered.song[i] = temp.song[i];
-                    filtered.album[i] = read;
-                    getline(fin, temp.artist[i], ',');
-                    getline(fin, temp.genre[i], '\n');
-                    filtered.artist[i] = temp.artist[i];
-                    filtered.genre[i] = temp.genre[i];
-                    if (a == 0)
-                    {
-                        cout << "Results for the album " << filtered.album[i] << "- " << endl;
-                        a++;
-                    }
-                    cout << filtered.song[i] << endl;
-                }
-                else
-                {
-                    getline(fin, trash, '\n');
-                }
-                i++;
-            }
-            if (notfound)
-            {
-                cout << "No results found" << endl;
-            }
-            break;
-        case4: //filter by genre
-            while (!fin.eof())
-            {
-                getline(fin, temp.song[i], ',');
-                getline(fin, temp.album[i], ',');
-                getline(fin, temp.artist[i], ',');
-                getline(fin, read, '\n');
-                if (read == search)
-                {
-                    notfound = false;
-                    filtered.genre[i] = read;
-                    filtered.song[i] = temp.song[i];
-                    filtered.artist[i] = temp.artist[i];
-                    filtered.album[i] = temp.album[i];
-                    if (a == 0)
-                    {
-                        cout << "Results for the genre " << filtered.genre[i] << "- " << endl;
-                        cout << "Song" << setw(30) << "artist" << endl;
-                        a++;
-                    }
-                    cout << filtered.song[i] << setw(30) << filtered.artist[i] << endl;
-                }
-                else
-                {
-                    getline(fin, trash, '\n');
-                }
-                i++;
-            }
-            if (notfound)
-            {
-                cout << "No results found" << endl;
-            }
-            break;
-        default:
-            cout << "invalid input" << endl;
-        }
     }
 }
