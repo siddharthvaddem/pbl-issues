@@ -276,8 +276,12 @@ void filter_records(int subchoice2, string input)
                     filtered.album[i] = temp.album[i];
                     filtered.artist[i] = temp.artist[i];
                     filtered.genre[i] = temp.genre[i];
-                    cout << "Results for " << filtered.song[i] << "- " << endl;
-                    cout << "artist" << setw(30) << "album" << setw(30) << "genre" << endl;
+                    if (a == 0)
+                    {
+                        cout << "Results for " << filtered.song[i] << "- " << endl;
+                        cout << "artist" << setw(30) << "album" << setw(30) << "genre" << endl;
+                        a++;
+                    }
                     cout << filtered.artist[i] << setw(30) << filtered.album[i] << setw(30) << filtered.genre[i] << endl;
                 }
                 else
@@ -309,6 +313,7 @@ void filter_records(int subchoice2, string input)
                     if (a == 0)
                     {
                         cout << "Results for the album " << filtered.album[i] << "- " << endl;
+                        a++;
                     }
                     cout << filtered.song[i] << endl;
                 }
@@ -337,8 +342,12 @@ void filter_records(int subchoice2, string input)
                     filtered.song[i] = temp.song[i];
                     filtered.artist[i] = temp.artist[i];
                     filtered.album[i] = temp.album[i];
-                    cout << "Results for the genre " << filtered.genre[i] << "- " << endl;
-                    cout << "Song" << setw(30) << "artist" << endl;
+                    if (a == 0)
+                    {
+                        cout << "Results for the genre " << filtered.genre[i] << "- " << endl;
+                        cout << "Song" << setw(30) << "artist" << endl;
+                        a++;
+                    }
                     cout << filtered.song[i] << setw(30) << filtered.artist[i] << endl;
                 }
                 else

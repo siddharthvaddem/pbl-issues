@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <conio.h>
 #include <stdlib.h>
@@ -30,10 +31,10 @@ void display()
         int i = 0, size = 0;
         while (!fin.eof())
         {
-            getline(fin, detail[i].song, ',');
-            getline(fin, detail[i].artist, ',');
-            getline(fin, detail[i].album, ',');
-            getline(fin, detail[i].genre, '\n');
+            getline(fin, filtered[i].song, ',');
+            getline(fin, filtered[i].artist, ',');
+            getline(fin, filtered[i].album, ',');
+            getline(fin, filtered[i].genre, '\n');
             i++;
             size++;
         }
@@ -95,8 +96,6 @@ int main()
             cout << "genre- " << genre;
         }
     }
-
-
     fin.close();*/
     return 0;
 }
