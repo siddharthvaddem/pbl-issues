@@ -149,7 +149,7 @@ void filter_records()
     }
     else
     {
-        
+
     lbl2:
         int i = 0, a = 0;
         cout << "Filter by -" << endl;
@@ -157,8 +157,8 @@ void filter_records()
         cout << "2>Song  " << endl;
         cout << "3>Album " << endl;
         cout << "4>Genre " << endl;
-        cout << "5>Return to previous menu"<<endl;
-        cout << "Enter your choice: " ;
+        cout << "5>Return to previous menu" << endl;
+        cout << "Enter your choice: ";
         cin >> Subchoice;
         cout << endl;
         switch (Subchoice)
