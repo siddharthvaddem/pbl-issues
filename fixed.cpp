@@ -16,24 +16,23 @@ typedef struct info
     string genre;
 } Info;
 
-Info data[100], filtered[100], temp[100];
-string trash;
-struct playlist : info
+struct playlist : info  //Inheritinf from info structure
 {
     struct playlist *next;
 } * head;
 
 int size = 0;
 
-void create_playlist_menu();
+void create_playlist_menu(Info data[]);
 void edit_record_menu();
-void display_record_menu();
-void display_all_records();
+void display_record_menu(Info data[]);
+void display_all_records(Info data[]);
 void play_playlist_menu();
 void filter_records();
 
 int main()
 {
+    Info data[100];
 lbl:
     int choice, subchoice;
     cout << "MENU\n";
@@ -49,11 +48,11 @@ lbl:
     {
 
     case 1: //fucntion1
-        create_playlist_menu();
+        create_playlist_menu(data);
 
         break;
     case 2: //function2
-        display_record_menu();
+        display_record_menu(data);
         break;
     case 3: //function3
         edit_record_menu();
@@ -72,28 +71,38 @@ lbl:
     goto lbl;
     return 0;
 }
-void create_playlist_menu()
+
+void create_playlist_menu(Info data[])
 {
     string name, song_name;
-    playlist *head = new playlist;
-    cout << "Enter the name of the file:";
+    cout << "Enter the name of the playlist:";
     cin >> name;
     cout << endl;
-    display_all_records();
+    display_all_records(data);
+    head = NULL;
     cout << "Enter the name of the song to be added:";
     cin >> song_name;
-    bool notfound = true;
     for (int i = 0; i < size; i++)
     {
         if (data[i].song == song_name)
         {
             playlist *new_song = new playlist();
-            new_song->album = "hello";
             new_song->song = data[i].song;
             new_song->album = data[i].album;
             new_song->artist = data[i].artist;
             new_song->genre = data[i].genre;
             new_song->next = NULL;
+            if(head == NULL)
+            {
+                head  = new_song;
+            }
+            else{
+                playlist *temp = new playlist();
+                temp = head;
+                head = new_song;
+                new_song->next = temp;
+                delete temp;
+            }
         }
     }
 }
@@ -126,7 +135,7 @@ lbl:
     }
 }
 
-void display_record_menu()
+void display_record_menu(Info data[])
 {
 lbl:
     int subchoice;
@@ -144,7 +153,7 @@ lbl:
     case 1: //subfunction1
         cout << "all records" << endl;
         cout << endl;
-        display_all_records();
+        display_all_records(data);
         break;
     case 2: //subfunction2
         filter_records();
@@ -162,8 +171,9 @@ lbl:
 void filter_records()
 {
     int Subchoice;
+    Info filtered[100], temp[100];
 lbl2:
-    string read, search;
+    string read, search, trash;
     ifstream fin;
     bool notfound = true;
     int i = 0, a = 0;
@@ -350,11 +360,12 @@ lbl2:
                         a++;
                     }
                     cout << filtered[i].song << setw(30) << filtered[i].artist << endl;
-                }
+                } /*
                 else
                 {
                     getline(fin, trash, '\n');
-                }
+                }*/
+
                 i++;
             }
             if (notfound)
@@ -402,7 +413,7 @@ lbl:
     goto lbl;
 }
 
-void display_all_records()
+void display_all_records(Info data[])
 {
     ifstream fin;
     fin.open("dummy.csv");
