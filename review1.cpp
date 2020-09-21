@@ -18,20 +18,21 @@ typedef struct info
 
 Info data, filtered, temp;
 string trash;
-struct node
+struct playlist
 {
-    struct node *prev;
+    Info playlist_data;
     struct node *next;
-} Node;
+};
 
 int size = 0;
 
+void create_playlist_menu();
 void edit_record_menu();
 void display_record_menu();
 void display_all_records();
 void play_playlist_menu();
-void readFile();
 void filter_records();
+
 int main()
 {
 lbl:
@@ -49,7 +50,7 @@ lbl:
     {
 
     case 1: //fucntion1
-        cout << "Create playlist" << endl;
+        create_playlist_menu();
 
         break;
     case 2: //function2
@@ -71,6 +72,29 @@ lbl:
     }
     goto lbl;
     return 0;
+}
+void create_playlist_menu()
+{
+    /*string name, song_name;
+    playlist *head = new playlist;
+    cout << "Enter the name of the file:";
+    cin >> name;
+    cout << endl;
+    display_all_records();
+    cout << "Enter the name of the song to be added:";
+    cin >> song_name;
+    bool notfound = true;
+    for (int i = 0; i < size; i++)
+    {
+        if (data.song[i] == song_name)
+        {
+            playlist *new_song = new playlist;
+            new_song->playlist_data.song = data.song[i];
+            new_song->playlist_data.album = data.album[i];
+            new_song->playlist_data.artist = data.artist[i];
+            new_song->playlist_data.genre = data.genre[i];
+        }
+    }*/
 }
 
 void edit_record_menu()
@@ -119,7 +143,6 @@ lbl:
     case 1: //subfunction1
         cout << "all records" << endl;
         cout << endl;
-        readFile();
         display_all_records();
         break;
     case 2: //subfunction2
@@ -137,33 +160,32 @@ lbl:
 
 void filter_records()
 {
-    string search;
     int Subchoice;
-    string read;
+lbl2:
+    string read, search;
     ifstream fin;
-    fin.open("dummy.csv");
     bool notfound = true;
-    if (!fin)
+    int i = 0, a = 0;
+    cout << "Filter by -" << endl;
+    cout << "1>Artist " << endl;
+    cout << "2>Song  " << endl;
+    cout << "3>Album " << endl;
+    cout << "4>Genre " << endl;
+    cout << "5>Return to previous menu" << endl;
+    cout << "Enter your choice: ";
+    cin >> Subchoice;
+    cout << endl;
+    switch (Subchoice)
     {
-        cout << "file could not be opened" << endl;
-    }
-    else
-    {
+    case 1: //filter by artist
 
-    lbl2:
-        int i = 0, a = 0;
-        cout << "Filter by -" << endl;
-        cout << "1>Artist " << endl;
-        cout << "2>Song  " << endl;
-        cout << "3>Album " << endl;
-        cout << "4>Genre " << endl;
-        cout << "5>Return to previous menu" << endl;
-        cout << "Enter your choice: ";
-        cin >> Subchoice;
-        cout << endl;
-        switch (Subchoice)
+        fin.open("dummy.csv");
+        if (!fin)
         {
-        case 1: //filter by artist
+            cout << "file could not be opened" << endl;
+        }
+        else
+        {
             cout << "Enter the name of the artist:";
             cin >> search;
             cout << endl;
@@ -200,8 +222,17 @@ void filter_records()
             {
                 cout << "No results found" << endl;
             }
-            break;
-        case 2: //filter by song
+        }
+        fin.close();
+        break;
+    case 2: //filter by song
+        fin.open("dummy.csv");
+        if (!fin)
+        {
+            cout << "file could not be opened" << endl;
+        }
+        else
+        {
             cout << "Enter the name of the song:";
             cin >> search;
             cout << endl;
@@ -238,8 +269,18 @@ void filter_records()
             {
                 cout << "No results found" << endl;
             }
-            break;
-        case 3: //filter by album
+        }
+        fin.close();
+
+        break;
+    case 3: //filter by album
+        fin.open("dummy.csv");
+        if (!fin)
+        {
+            cout << "file could not be opened" << endl;
+        }
+        else
+        {
             cout << "Enter the name of the album:";
             cin >> search;
             cout << endl;
@@ -274,8 +315,17 @@ void filter_records()
             {
                 cout << "No results found" << endl;
             }
-            break;
-        case 4: //filter by genre
+        }
+        fin.close();
+        break;
+    case 4: //filter by genre
+        fin.open("dummy.csv");
+        if (!fin)
+        {
+            cout << "file could not be opened" << endl;
+        }
+        else
+        {
             cout << "Enter the genre you would like to search:";
             cin >> search;
             cout << endl;
@@ -310,16 +360,16 @@ void filter_records()
             {
                 cout << "No results found" << endl;
             }
-            break;
-        case 5:
-            fin.close();
-            return;
-            break;
-        default:
-            cout << "invalid input" << endl;
         }
-        goto lbl2;
+        fin.close();
+        break;
+    case 5:
+        return;
+        break;
+    default:
+        cout << "invalid input" << endl;
     }
+    goto lbl2;
 }
 
 void play_playlist_menu()
@@ -351,7 +401,7 @@ lbl:
     goto lbl;
 }
 
-void readFile()
+void display_all_records()
 {
     ifstream fin;
     fin.open("dummy.csv");
@@ -374,11 +424,6 @@ void readFile()
         }
     }
     fin.close();
-}
-
-void display_all_records()
-{
-    int artist1, album1, song1, genre1;
     cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
     for (int i = 0; i < size; i++)
     {
