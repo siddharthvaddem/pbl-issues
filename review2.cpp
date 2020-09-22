@@ -295,7 +295,7 @@ void filter_records(int subchoice2, string input)
                 cout << "No results found" << endl;
             }
             break;
-        case3: //filter by album
+        case 3: //filter by album
             while (!fin.eof())
             {
                 getline(fin, temp.song[i], ',');
@@ -328,7 +328,7 @@ void filter_records(int subchoice2, string input)
                 cout << "No results found" << endl;
             }
             break;
-        case4: //filter by genre
+        case 4: //filter by genre
             while (!fin.eof())
             {
                 getline(fin, temp.song[i], ',');
