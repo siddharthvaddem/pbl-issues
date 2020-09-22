@@ -16,17 +16,17 @@ typedef struct info
     string genre;
 } Info;
 
-struct playlist : info  //Inheritinf from info structure
+struct playlist : info //Inheritinf from info structure
 {
     struct playlist *next;
 } * head;
 
 int size = 0;
 
-void create_playlist_menu(Info data[]);
+void create_playlist_menu();
 void edit_record_menu();
 void display_record_menu(Info data[]);
-void display_all_records(Info data[]);
+int display_all_records(Info data[]);
 void play_playlist_menu();
 void filter_records();
 
@@ -48,7 +48,7 @@ lbl:
     {
 
     case 1: //fucntion1
-        create_playlist_menu(data);
+        create_playlist_menu();
 
         break;
     case 2: //function2
@@ -72,39 +72,98 @@ lbl:
     return 0;
 }
 
-void create_playlist_menu(Info data[])
+void write_to_playlist(playlist *song, string name)
 {
+
+    ofstream fout;
+    fout.open(name);
+    if (!fout)
+    {
+        cout << "Error in opening file" << endl;
+    }
+    else
+    {
+        while (song != NULL)
+        {
+            fout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
+            song = song->next;
+        }
+    }
+    fout.close();
+}
+void create_playlist_menu()
+{
+    Info data[20];
     string name, song_name;
+    playlist *new_song, *song;
+    int size, choice;
+    bool run = true;
+    char donotend;
+    head = NULL;
     cout << "Enter the name of the playlist:";
     cin >> name;
     cout << endl;
-    display_all_records(data);
-    head = NULL;
-    cout << "Enter the name of the song to be added:";
-    cin >> song_name;
-    for (int i = 0; i < size; i++)
+    name = name + ".csv";
+lbl:
+    cout << "Menu" << endl;
+    cout << "1>Display available songs" << endl;
+    cout << "2>Add song to playlist" << endl;
+    cout << "3>View songs in current playlist" << endl;
+    cout << "4>Save the playlist" << endl;
+    cout << "Eneter your choice:";
+    cin >> choice;
+    cout << endl;
+
+    switch (choice)
     {
-        if (data[i].song == song_name)
+    case 1:
+        size = display_all_records(data);
+        break;
+    case 2:
+        cout << "Enter the name of the song to be added:";
+        cin >> song_name;
+        for (int i = 0; i < size; i++)
         {
-            playlist *new_song = new playlist();
-            new_song->song = data[i].song;
-            new_song->album = data[i].album;
-            new_song->artist = data[i].artist;
-            new_song->genre = data[i].genre;
-            new_song->next = NULL;
-            if(head == NULL)
+            if (data[i].song == song_name)
             {
-                head  = new_song;
-            }
-            else{
-                playlist *temp = new playlist();
-                temp = head;
-                head = new_song;
-                new_song->next = temp;
-                delete temp;
+                new_song = new playlist();
+                new_song->song = data[i].song;
+                new_song->album = data[i].album;
+                new_song->artist = data[i].artist;
+                new_song->genre = data[i].genre;
+                new_song->next = NULL;
+                if (head == NULL)
+                {
+                    head = new_song;
+                }
+                else
+                {
+                    playlist *temp;
+                    temp = head;
+                    head = new_song;
+                    new_song->next = temp;
+                }
             }
         }
+        break;
+    case 3:
+        song = head;
+        while (song != NULL)
+        {
+            cout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
+            song = song->next;
+        }
+        break;
+    case 4:
+        write_to_playlist(new_song, name);
+        delete new_song;
+        cout << "Playlist saved" << endl;
+        return;
+        break;
+    default:
+        cout << "Invalid choice";
     }
+    goto lbl;
 }
 
 void edit_record_menu()
@@ -139,7 +198,7 @@ void display_record_menu(Info data[])
 {
 lbl:
     int subchoice;
-
+    int size;
     cout << "Display records" << endl;
     cout << "1>Display all records" << endl;
     cout << "2>Filter" << endl;
@@ -153,7 +212,7 @@ lbl:
     case 1: //subfunction1
         cout << "all records" << endl;
         cout << endl;
-        display_all_records(data);
+        size = display_all_records(data);
         break;
     case 2: //subfunction2
         filter_records();
@@ -413,9 +472,10 @@ lbl:
     goto lbl;
 }
 
-void display_all_records(Info data[])
+int display_all_records(Info data[])
 {
     ifstream fin;
+    int size = 0;
     fin.open("dummy.csv");
     bool notfound = true;
     if (!fin)
@@ -435,10 +495,11 @@ void display_all_records(Info data[])
             size++;
         }
     }
-    fin.close();
     cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
     for (int i = 0; i < size; i++)
     {
         cout << data[i].song << setw(30) << data[i].album << setw(30) << data[i].artist << setw(30) << data[i].genre << endl;
     }
+    fin.close();
+    return size;
 }
