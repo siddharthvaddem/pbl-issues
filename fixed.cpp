@@ -122,7 +122,7 @@ lbl:
         display_all_records(data, size);
         break;
     case 2:
-        cout << size << endl;
+
         cout << "Enter the name of the song to be added:";
         getline(cin, song_name);
         for (int i = 0; i < size; i++)

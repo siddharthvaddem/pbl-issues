@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <fstream>
 #include <iomanip>
+#include <string>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -29,6 +30,7 @@ void display_record_menu(Info data[]);
 int display_all_records(Info data[]);
 void play_playlist_menu();
 void filter_records();
+void removeSpace(string);
 
 int main()
 {
@@ -244,6 +246,8 @@ lbl2:
     cout << "5>Return to previous menu" << endl;
     cout << "Enter your choice: ";
     cin >> Subchoice;
+    cin.clear();
+    cin.sync();
     cout << endl;
     switch (Subchoice)
     {
@@ -257,17 +261,32 @@ lbl2:
         else
         {
             cout << "Enter the name of the artist:";
-            cin >> search;
+            getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
+
             cout << endl;
+            //search.erase(remove(search.begin(), search.end(), ' '), search.end());
             while (!fin.eof())
             {
 
                 getline(fin, temp[i].song, ',');
                 getline(fin, temp[i].album, ',');
                 getline(fin, read, ',');
-                if (read == search)
+                //read.erase(remove(read.begin(), read.end(), ' '), read.end());
+                for (auto &c : read)
                 {
+                    c = tolower(c);
+                }
 
+                if (search == read)
+                {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
                     notfound = false;
                     filtered[i].song = temp[i].song;
                     filtered[i].album = temp[i].album;
@@ -304,14 +323,26 @@ lbl2:
         else
         {
             cout << "Enter the name of the song:";
-            cin >> search;
+            getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
 
                 getline(fin, read, ',');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
 
                     notfound = false;
                     filtered[i].song = read;
@@ -352,14 +383,26 @@ lbl2:
         else
         {
             cout << "Enter the name of the album:";
-            cin >> search;
+            getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
                 getline(fin, temp[i].song, ',');
                 getline(fin, read, ',');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
 
                     notfound = false;
                     filtered[i].song = temp[i].song;
@@ -397,7 +440,11 @@ lbl2:
         else
         {
             cout << "Enter the genre you would like to search:";
-            cin >> search;
+            getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
@@ -405,8 +452,16 @@ lbl2:
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
                 getline(fin, read, '\n');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
                     notfound = false;
                     filtered[i].genre = read;
                     filtered[i].song = temp[i].song;
@@ -503,3 +558,12 @@ int display_all_records(Info data[])
     fin.close();
     return size;
 }
+
+/*void removeSpace(string st)
+{
+    string str = st;
+
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+
+    cout << str << endl;
+}*/
