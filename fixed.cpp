@@ -16,7 +16,7 @@ typedef struct info
     string genre;
 } Info;
 
-struct playlist : info //Inheritinf from info structure
+struct playlist : info //Inheriting from info structure
 {
     struct playlist *next;
 } * head;
@@ -245,6 +245,8 @@ lbl2:
     cout << "Enter your choice: ";
     cin >> Subchoice;
     cout << endl;
+    cin.clear();
+    cin.sync();
     switch (Subchoice)
     {
     case 1: //filter by artist
@@ -257,7 +259,7 @@ lbl2:
         else
         {
             cout << "Enter the name of the artist:";
-            cin >> search;
+            getline(cin, search);
             cout << endl;
             while (!fin.eof())
             {
@@ -304,7 +306,7 @@ lbl2:
         else
         {
             cout << "Enter the name of the song:";
-            cin >> search;
+            getline(cin, search);
             cout << endl;
             while (!fin.eof())
             {
@@ -352,7 +354,7 @@ lbl2:
         else
         {
             cout << "Enter the name of the album:";
-            cin >> search;
+            getline(cin, search);
             cout << endl;
             while (!fin.eof())
             {
@@ -397,7 +399,7 @@ lbl2:
         else
         {
             cout << "Enter the genre you would like to search:";
-            cin >> search;
+            getline(cin, search);
             cout << endl;
             while (!fin.eof())
             {
