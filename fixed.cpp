@@ -26,7 +26,8 @@ int size = 0;
 void create_playlist_menu();
 void edit_record_menu();
 void display_record_menu(Info data[]);
-int display_all_records(Info data[]);
+int readFile(Info data[]);
+void display_all_records(Info data[], int size);
 void play_playlist_menu();
 void filter_records();
 
@@ -97,13 +98,12 @@ void create_playlist_menu()
     string name, song_name;
     playlist *new_song, *song;
     int size, choice;
-    bool run = true;
-    char donotend;
     head = NULL;
     cout << "Enter the name of the playlist:";
     cin >> name;
     cout << endl;
     name = name + ".csv";
+    size = readFile(data);
 lbl:
     cout << "Menu" << endl;
     cout << "1>Display available songs" << endl;
@@ -113,15 +113,18 @@ lbl:
     cout << "Eneter your choice:";
     cin >> choice;
     cout << endl;
+    cin.clear();
+    cin.sync();
 
     switch (choice)
     {
     case 1:
-        size = display_all_records(data);
+        display_all_records(data, size);
         break;
     case 2:
+        cout << size << endl;
         cout << "Enter the name of the song to be added:";
-        cin >> song_name;
+        getline(cin, song_name);
         for (int i = 0; i < size; i++)
         {
             if (data[i].song == song_name)
@@ -212,7 +215,8 @@ lbl:
     case 1: //subfunction1
         cout << "all records" << endl;
         cout << endl;
-        size = display_all_records(data);
+        size = readFile(data);
+        display_all_records(data, size);
         break;
     case 2: //subfunction2
         filter_records();
@@ -474,7 +478,15 @@ lbl:
     goto lbl;
 }
 
-int display_all_records(Info data[])
+void display_all_records(Info data[], int size)
+{
+    cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        cout << data[i].song << setw(30) << data[i].album << setw(30) << data[i].artist << setw(30) << data[i].genre << endl;
+    }
+}
+int readFile(Info data[])
 {
     ifstream fin;
     int size = 0;
@@ -497,11 +509,5 @@ int display_all_records(Info data[])
             size++;
         }
     }
-    cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
-    for (int i = 0; i < size; i++)
-    {
-        cout << data[i].song << setw(30) << data[i].album << setw(30) << data[i].artist << setw(30) << data[i].genre << endl;
-    }
-    fin.close();
     return size;
 }
