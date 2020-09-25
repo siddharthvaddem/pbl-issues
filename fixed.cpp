@@ -112,7 +112,7 @@ lbl:
     cout << "2>Add song to playlist" << endl;
     cout << "3>View songs in current playlist" << endl;
     cout << "4>Save the playlist" << endl;
-    cout << "Eneter your choice:";
+    cout << "Enter your choice:";
     cin >> choice;
     cout << endl;
     cin.clear();
@@ -532,7 +532,7 @@ lbl:
         mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
         break;
     case 3:
-        if (i + 1 > size)
+        if ((i + 1) <= size)
         {
             i = i + 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
