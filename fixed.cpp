@@ -4,7 +4,8 @@
 #include <ctype.h>
 #include <fstream>
 #include <iomanip>
-#include <bits/stdc++.h>
+#include <string>
+#include <windows.h>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ typedef struct info
     string album;
     string song;
     string genre;
+    string link;
 } Info;
 
 struct playlist : info //Inheriting from info structure
@@ -86,7 +88,7 @@ void write_to_playlist(playlist *song, string name)
     {
         while (song != NULL)
         {
-            fout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
+            fout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "," << song->link << "\n";
             song = song->next;
         }
     }
@@ -125,8 +127,16 @@ lbl:
 
         cout << "Enter the name of the song to be added:";
         getline(cin, song_name);
+        for (auto &c : song_name)
+        {
+            c = tolower(c);
+        }
         for (int i = 0; i < size; i++)
         {
+            for (auto &c : data[i].song)
+            {
+                c = tolower(c);
+            }
             if (data[i].song == song_name)
             {
                 new_song = new playlist();
@@ -134,6 +144,7 @@ lbl:
                 new_song->album = data[i].album;
                 new_song->artist = data[i].artist;
                 new_song->genre = data[i].genre;
+                new_song->link = data[i].link;
                 new_song->next = NULL;
                 if (head == NULL)
                 {
@@ -151,6 +162,7 @@ lbl:
         break;
     case 3:
         song = head;
+
         while (song != NULL)
         {
             cout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
@@ -264,6 +276,10 @@ lbl2:
         {
             cout << "Enter the name of the artist:";
             getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
@@ -271,8 +287,16 @@ lbl2:
                 getline(fin, temp[i].song, ',');
                 getline(fin, temp[i].album, ',');
                 getline(fin, read, ',');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
 
                     notfound = false;
                     filtered[i].song = temp[i].song;
@@ -311,13 +335,25 @@ lbl2:
         {
             cout << "Enter the name of the song:";
             getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
 
                 getline(fin, read, ',');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
 
                     notfound = false;
                     filtered[i].song = read;
@@ -360,12 +396,25 @@ lbl2:
             cout << "Enter the name of the album:";
             getline(cin, search);
             cout << endl;
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             while (!fin.eof())
             {
                 getline(fin, temp[i].song, ',');
                 getline(fin, read, ',');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
+
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
 
                     notfound = false;
                     filtered[i].song = temp[i].song;
@@ -404,6 +453,10 @@ lbl2:
         {
             cout << "Enter the genre you would like to search:";
             getline(cin, search);
+            for (auto &c : search)
+            {
+                c = tolower(c);
+            }
             cout << endl;
             while (!fin.eof())
             {
@@ -411,8 +464,16 @@ lbl2:
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
                 getline(fin, read, '\n');
+                for (auto &c : read)
+                {
+                    c = tolower(c);
+                }
                 if (read == search)
                 {
+                    for (auto &c : read)
+                    {
+                        c = toupper(c);
+                    }
                     notfound = false;
                     filtered[i].genre = read;
                     filtered[i].song = temp[i].song;
@@ -425,11 +486,11 @@ lbl2:
                         a++;
                     }
                     cout << filtered[i].song << setw(30) << filtered[i].artist << endl;
-                } /*
+                }
                 else
                 {
                     getline(fin, trash, '\n');
-                }*/
+                }
 
                 i++;
             }
@@ -448,6 +509,62 @@ lbl2:
     }
     goto lbl2;
 }
+void play_playlist()
+{
+    int choice, i = 0, size;
+    Info data[100];
+    size = readFile(data);
+
+lbl1:
+    cout << size << "\n"
+         << data[i].link;
+    string link = "open " + data[i].link + " alias MyFile";
+    mciSendStringA(link.c_str(), NULL, 0, 0);
+lbl:
+    cout << "Options\n1>play\n2>pause\n3>Play next song\n4>Play previous song\n5>stop\nEnter your choice:";
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        mciSendString(TEXT("play MyFile "), NULL, 0, 0);
+        break;
+    case 2:
+        mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
+        break;
+    case 3:
+        if (i + 1 > size)
+        {
+            i = i + 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        else
+        {
+            cout << "This is the last song!!" << endl;
+        }
+
+        break;
+    case 4:
+        if (i - 1 >= 0)
+        {
+            i = i - 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        else
+        {
+            cout << "This is the start of the playlist!!" << endl;
+        }
+
+        break;
+    case 5:
+        mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+        return;
+    default:
+        cout << "Invalid choice" << endl;
+    }
+    goto lbl;
+}
 
 void play_playlist_menu()
 {
@@ -463,7 +580,7 @@ lbl:
     switch (subchoice)
     {
     case 1: //subfunction1
-        cout << "Play from song" << endl;
+        play_playlist();
         break;
     case 2: //subfunction2
         cout << "Shuffle play" << endl;
@@ -504,7 +621,8 @@ int readFile(Info data[])
             getline(fin, data[i].song, ',');
             getline(fin, data[i].album, ',');
             getline(fin, data[i].artist, ',');
-            getline(fin, data[i].genre, '\n');
+            getline(fin, data[i].genre, ',');
+            getline(fin, data[i].link, '\n');
             i++;
             size++;
         }
