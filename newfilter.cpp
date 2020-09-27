@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
-#include <bits/stdc++.h>
+#include <windows.h>
 
 using namespace std;
 
@@ -15,9 +15,18 @@ typedef struct info
     string album;
     string song;
     string genre;
+    string link;
 } Info;
+typedef struct login
+{
+    string username;
+    string password;
+    string masterplaylist;
+} Login;
 
-struct playlist : info //Inheritinf from info structure
+Login details[100];
+
+struct playlist : info //Inheriting from info structure
 {
     struct playlist *next;
 } * head;
@@ -27,22 +36,56 @@ int size = 0;
 void create_playlist_menu();
 void edit_record_menu();
 void display_record_menu(Info data[]);
-int display_all_records(Info data[]);
+int readFile(Info data[]);
+void display_all_records(Info data[], int size);
 void play_playlist_menu();
 void filter_records();
-void removeSpace(string);
-
+string signin();
+string signup();
+void addLoginData(string, string, string);
+int readLoginData(Login details[]);
+string userplaylist;
 int main()
 {
     Info data[100];
+    int loginchoice;
+login:
+    cout << "WELCOME TO insert_name " << endl;
+    cout << "Sign in To continue" << endl;
+    cout << "1>Already have an account?" << endl;
+    cout << "2>Create new account" << endl;
+    cout << "3>Quit application" << endl;
+label:
+    cout << "Enter your choice- ";
+
+    cin >> loginchoice;
+    cout << endl;
+    switch (loginchoice)
+    {
+    case 1: //call signin func
+        userplaylist = signin();
+        break;
+    case 2: //call signup function
+        userplaylist = signup();
+        break;
+    case 3:
+        exit(0);
+        break;
+    default:
+        cout << "Invalid Input" << endl;
+        goto label;
+    }
 lbl:
     int choice, subchoice;
+    string input;
+
     cout << "MENU\n";
     cout << "1>Create playlist" << endl;
     cout << "2>Display records" << endl;
     cout << "3>Edit records" << endl;
     cout << "4>Play Playlist" << endl;
-    cout << "5>Exit" << endl;
+    cout << "5>Logout" << endl;
+    cout << "6>Exit" << endl;
     cout << "Enter your choice:";
     cin >> choice;
     cout << endl;
@@ -62,8 +105,21 @@ lbl:
     case 4: //function4
         play_playlist_menu();
         break;
-
     case 5: //function5
+        cout << "Are you sure you want to logout (Y/N)?" << endl;
+        cin >> input;
+        cout << endl;
+        if (input == "Y" || input == "y")
+        {
+            goto login;
+        }
+        else
+        {
+            goto lbl;
+        }
+
+        break;
+    case 6: //function5
         exit(0);
         break;
 
@@ -87,10 +143,22 @@ void write_to_playlist(playlist *song, string name)
     {
         while (song != NULL)
         {
-            fout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
+            fout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "," << song->link << "\n";
             song = song->next;
         }
     }
+    fout.close();
+    fout.open(userplaylist, ios::out | ios::app);
+    if (!fout)
+    {
+        cout << "Unable to save in listsing of playlists " << endl;
+    }
+    else
+    {
+        fout << "playlist name"
+             << "," << name << "\n";
+    }
+    cout << endl;
     fout.close();
 }
 void create_playlist_menu()
@@ -99,33 +167,43 @@ void create_playlist_menu()
     string name, song_name;
     playlist *new_song, *song;
     int size, choice;
-    bool run = true;
-    char donotend;
     head = NULL;
     cout << "Enter the name of the playlist:";
     cin >> name;
     cout << endl;
     name = name + ".csv";
+    size = readFile(data);
 lbl:
     cout << "Menu" << endl;
     cout << "1>Display available songs" << endl;
     cout << "2>Add song to playlist" << endl;
     cout << "3>View songs in current playlist" << endl;
     cout << "4>Save the playlist" << endl;
-    cout << "Eneter your choice:";
+    cout << "Enter your choice:";
     cin >> choice;
     cout << endl;
+    cin.clear();
+    cin.sync();
 
     switch (choice)
     {
     case 1:
-        size = display_all_records(data);
+        display_all_records(data, size);
         break;
     case 2:
+
         cout << "Enter the name of the song to be added:";
-        cin >> song_name;
+        getline(cin, song_name);
+        for (auto &c : song_name)
+        {
+            c = tolower(c);
+        }
         for (int i = 0; i < size; i++)
         {
+            for (auto &c : data[i].song)
+            {
+                c = tolower(c);
+            }
             if (data[i].song == song_name)
             {
                 new_song = new playlist();
@@ -133,6 +211,7 @@ lbl:
                 new_song->album = data[i].album;
                 new_song->artist = data[i].artist;
                 new_song->genre = data[i].genre;
+                new_song->link = data[i].link;
                 new_song->next = NULL;
                 if (head == NULL)
                 {
@@ -150,6 +229,7 @@ lbl:
         break;
     case 3:
         song = head;
+
         while (song != NULL)
         {
             cout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
@@ -214,7 +294,8 @@ lbl:
     case 1: //subfunction1
         cout << "all records" << endl;
         cout << endl;
-        size = display_all_records(data);
+        size = readFile(data);
+        display_all_records(data, size);
         break;
     case 2: //subfunction2
         filter_records();
@@ -246,9 +327,9 @@ lbl2:
     cout << "5>Return to previous menu" << endl;
     cout << "Enter your choice: ";
     cin >> Subchoice;
+    cout << endl;
     cin.clear();
     cin.sync();
-    cout << endl;
     switch (Subchoice)
     {
     case 1: //filter by artist
@@ -266,27 +347,24 @@ lbl2:
             {
                 c = tolower(c);
             }
-
             cout << endl;
-            //search.erase(remove(search.begin(), search.end(), ' '), search.end());
             while (!fin.eof())
             {
 
                 getline(fin, temp[i].song, ',');
                 getline(fin, temp[i].album, ',');
                 getline(fin, read, ',');
-                //read.erase(remove(read.begin(), read.end(), ' '), read.end());
                 for (auto &c : read)
                 {
                     c = tolower(c);
                 }
-
-                if (search == read)
+                if (read == search)
                 {
                     for (auto &c : read)
                     {
                         c = toupper(c);
                     }
+
                     notfound = false;
                     filtered[i].song = temp[i].song;
                     filtered[i].album = temp[i].album;
@@ -384,11 +462,11 @@ lbl2:
         {
             cout << "Enter the name of the album:";
             getline(cin, search);
+            cout << endl;
             for (auto &c : search)
             {
                 c = tolower(c);
             }
-            cout << endl;
             while (!fin.eof())
             {
                 getline(fin, temp[i].song, ',');
@@ -397,6 +475,7 @@ lbl2:
                 {
                     c = tolower(c);
                 }
+
                 if (read == search)
                 {
                     for (auto &c : read)
@@ -474,11 +553,11 @@ lbl2:
                         a++;
                     }
                     cout << filtered[i].song << setw(30) << filtered[i].artist << endl;
-                } /*
+                }
                 else
                 {
                     getline(fin, trash, '\n');
-                }*/
+                }
 
                 i++;
             }
@@ -497,6 +576,62 @@ lbl2:
     }
     goto lbl2;
 }
+void play_playlist()
+{
+    int choice, i = 0, size;
+    Info data[100];
+    size = readFile(data);
+
+lbl1:
+    cout << size << "\n"
+         << data[i].link;
+    string link = "open " + data[i].link + " alias MyFile";
+    mciSendStringA(link.c_str(), NULL, 0, 0);
+lbl:
+    cout << "Options\n1>play\n2>pause\n3>Play next song\n4>Play previous song\n5>stop\nEnter your choice:";
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        mciSendString(TEXT("play MyFile "), NULL, 0, 0);
+        break;
+    case 2:
+        mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
+        break;
+    case 3:
+        if ((i + 1) <= size)
+        {
+            i = i + 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        else
+        {
+            cout << "This is the last song!!" << endl;
+        }
+
+        break;
+    case 4:
+        if (i - 1 >= 0)
+        {
+            i = i - 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        else
+        {
+            cout << "This is the start of the playlist!!" << endl;
+        }
+
+        break;
+    case 5:
+        mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+        return;
+    default:
+        cout << "Invalid choice" << endl;
+    }
+    goto lbl;
+}
 
 void play_playlist_menu()
 {
@@ -512,7 +647,7 @@ lbl:
     switch (subchoice)
     {
     case 1: //subfunction1
-        cout << "Play from song" << endl;
+        play_playlist();
         break;
     case 2: //subfunction2
         cout << "Shuffle play" << endl;
@@ -527,7 +662,15 @@ lbl:
     goto lbl;
 }
 
-int display_all_records(Info data[])
+void display_all_records(Info data[], int size)
+{
+    cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
+    for (int i = 0; i < size; i++)
+    {
+        cout << data[i].song << setw(30) << data[i].album << setw(30) << data[i].artist << setw(30) << data[i].genre << endl;
+    }
+}
+int readFile(Info data[])
 {
     ifstream fin;
     int size = 0;
@@ -545,25 +688,139 @@ int display_all_records(Info data[])
             getline(fin, data[i].song, ',');
             getline(fin, data[i].album, ',');
             getline(fin, data[i].artist, ',');
-            getline(fin, data[i].genre, '\n');
+            getline(fin, data[i].genre, ',');
+            getline(fin, data[i].link, '\n');
             i++;
             size++;
         }
     }
-    cout << "song" << setw(30) << "album" << setw(30) << "artist" << setw(30) << "genre" << endl;
+    return size;
+}
+
+string signup()
+{
+    string username, password, confirmpass;
+    cout << "Fill in the required details" << endl;
+    cout << "USERNAME- ";
+    cin.clear();
+    cin.sync();
+    getline(cin, username);
+    cout << endl;
+l1:
+    cout << "PASSWORD- ";
+    getline(cin, password);
+    cout << endl;
+    if (password.length() < 6)
+    {
+        cout << "Password should have a minimum of 6 characters" << endl;
+        password = "";
+        goto l1;
+    }
+    cout << "Re-enter PASSWORD- ";
+    getline(cin, confirmpass);
+
+    if (password != confirmpass)
+    {
+        cout << "Passwords dont match,Retry" << endl;
+        password = "";
+        confirmpass = "";
+        goto l1;
+    }
+    string name = username + ".csv";
+    addLoginData(username, password, name);
+    userplaylist = signin();
+    return userplaylist;
+}
+
+string signin()
+{
+label:
+    string input;
+    int size;
+    bool usernotfound = true;
+    bool passnotfound = true;
+    cin.clear();
+    cin.sync();
+    string username, password;
+    cout << "Enter login credentials" << endl;
+    cout << "USERNAME- ";
+    getline(cin, username);
+    size = readLoginData(details);
     for (int i = 0; i < size; i++)
     {
-        cout << data[i].song << setw(30) << data[i].album << setw(30) << data[i].artist << setw(30) << data[i].genre << endl;
+        if (details[i].username == username)
+        {
+            cout << endl;
+            usernotfound = false;
+        retry:
+            cout << "PASSWORD- ";
+            getline(cin, password);
+            if (details[i].password == password)
+            {
+                cout << endl;
+                cout << "Welcome back " << details[i].username << endl;
+                return details[i].masterplaylist;
+            }
+
+            else
+            {
+                cout << "Incorrect password .Please Try again " << endl;
+                goto retry;
+            }
+        }
+    }
+
+    if (usernotfound)
+    {
+        cout << "Username not found" << endl;
+        cout << "Are you sure you have an account in existence? (Y/N)" << endl;
+        cin >> input;
+        cout << endl;
+        if (input == "Y" || input == "y")
+            goto label;
+        else
+        {
+            cout << "Make a new account now .Its easy" << endl;
+            signup();
+        }
+    }
+    cout << endl;
+}
+
+void addLoginData(string username, string password, string name)
+{
+    string username1 = username;
+    string password1 = password;
+    string name1 = name;
+    fstream fout;
+    fout.open("accountdata.csv", ios::out | ios::app);
+    fout << username1 << "," << password1 << "," << name1 << "\n";
+
+    cout << "Account created successfully" << endl;
+    fout.close();
+}
+
+int readLoginData(Login details[])
+{
+    ifstream fin;
+    int size = 0;
+    fin.open("accountdata.csv");
+    if (!fin)
+    {
+        cout << "file could not be opened" << endl;
+    }
+    else
+    {
+        int i = 0;
+        while (!fin.eof())
+        {
+            getline(fin, details[i].username, ',');
+            getline(fin, details[i].password, ',');
+            getline(fin, details[i].masterplaylist, '\n');
+            i++;
+            size++;
+        }
     }
     fin.close();
     return size;
 }
-
-/*void removeSpace(string st)
-{
-    string str = st;
-
-    str.erase(remove(str.begin(), str.end(), ' '), str.end());
-
-    cout << str << endl;
-}*/
