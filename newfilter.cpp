@@ -152,10 +152,9 @@ void create_playlist_menu()
     cin >> name;
     cout << endl;
     name = userplaylist + name + ".csv";
-    
     ofstream fout;
-    fout.open(userplaylist+".csv", ios::app);
-    fout << name<<endl;
+    fout.open(userplaylist + ".csv", ios::app);
+    fout << name << "\n";
     fout.close();
     size = readFile(data, "dummy.csv");
 lbl:
@@ -234,13 +233,13 @@ void insert_song()
 {
     cin.clear();
     cin.sync();
-    string search,playlistName,filename = userplaylist + ".csv";
-    bool notfound  = true;
+    string search, playlistName, filename = userplaylist + ".csv";
+    bool notfound = true;
     cout << "Enter the name of the playlist you want to insert the song into:";
     getline(cin, search);
     for (auto &c : search)
     {
-            c = tolower(c);
+        c = tolower(c);
     }
     cout << endl;
     ifstream fin(filename);
@@ -271,74 +270,73 @@ void insert_song()
         return;
     }
     fin.close();
-    lblelse:
+lblelse:
     cin.clear();
     cin.sync();
-    fstream fio(search,ios::in|ios::out|ios::app);
-    if(!fio)
+    fstream fio(search, ios::in | ios::out | ios::app);
+    if (!fio)
     {
-        cout<<"Error in opening file!!"<<endl;
+        cout << "Error in opening file!!" << endl;
     }
-    else{
-        Info data_song_list[30],data_song_playlist[30];
+    else
+    {
+        Info data_song_list[30], data_song_playlist[30];
         string songname;
-        cout<<"Enter the name of the song you would like to enter:";
-        getline(cin,songname);
+        cout << "Enter the name of the song you would like to enter:";
+        getline(cin, songname);
         for (auto &c : songname)
         {
-                c = tolower(c);
+            c = tolower(c);
         }
         bool songnotfound = true;
-        int size = readFile(data_song_list,"dummy.csv");
-        for(int i =0;i<size;i++)
+        int size = readFile(data_song_list, "dummy.csv");
+        for (int i = 0; i < size; i++)
         {
             string song_name = data_song_list[i].song;
             for (auto &c : song_name)
             {
                 c = tolower(c);
             }
-            if(songname == song_name)
+            if (songname == song_name)
             {
-                int size_playlist = readFile(data_song_playlist,search);
-                for(int j =0;j<size_playlist;j++)
+                int size_playlist = readFile(data_song_playlist, search);
+                for (int j = 0; j < size_playlist; j++)
                 {
                     string song_name_playlist = data_song_playlist[j].song;
-                    for (auto &c :song_name_playlist )
+                    for (auto &c : song_name_playlist)
                     {
                         c = tolower(c);
                     }
-                    if(songname == song_name_playlist)
+                    if (songname == song_name_playlist)
                     {
-                        cout<<"Song already exists in the playlist,Enter another a song!!"<<endl;
+                        cout << "Song already exists in the playlist,Enter another a song!!" << endl;
                         songnotfound = false;
                         fio.close();
                         goto lblelse;
                     }
                 }
-                if(songnotfound)
+                if (songnotfound)
                 {
                     fio << data_song_list[i].song << "," << data_song_list[i].album << "," << data_song_list[i].artist << "," << data_song_list[i].genre << "," << data_song_list[i].link << "\n";
-                    cout<<"\nSong inserted\n";
+                    cout << "\nSong inserted\n";
                     fio.close();
                     break;
                 }
             }
         }
     }
-
-
 }
 void remove_song()
 {
     cin.clear();
     cin.sync();
-    string search,playlistName,filename = userplaylist + ".csv";
-    bool notfound  = true;
+    string search, playlistName, filename = userplaylist + ".csv";
+    bool notfound = true;
     cout << "Enter the name of the playlist you want to delete the song from:";
     getline(cin, search);
     for (auto &c : search)
     {
-            c = tolower(c);
+        c = tolower(c);
     }
     cout << endl;
     ifstream fin(filename);
@@ -373,39 +371,38 @@ void remove_song()
     string songname;
     Info data_song_playlist[20];
     bool songnotfound = true;
-    cout<<"Enter the name of the song to be removed:";
-    getline(cin,songname);
-    for (auto &c :songname )
+    cout << "Enter the name of the song to be removed:";
+    getline(cin, songname);
+    for (auto &c : songname)
     {
         c = tolower(c);
     }
-    cout<<endl;
-    int size = readFile(data_song_playlist,search);
-    for(int i =0;i<size;i++)
+    cout << endl;
+    int size = readFile(data_song_playlist, search);
+    for (int i = 0; i < size; i++)
     {
         string song_name_playlist = data_song_playlist[i].song;
-        for (auto &c :song_name_playlist )
+        for (auto &c : song_name_playlist)
         {
             c = tolower(c);
         }
-        if(songname == song_name_playlist)
+        if (songname == song_name_playlist)
         {
             songnotfound = false;
             pos = i;
             break;
         }
-
     }
-    if(songnotfound)
+    if (songnotfound)
     {
-        cout<<"song not found in playlist!!"<<endl;
+        cout << "song not found in playlist!!" << endl;
         return;
     }
     ofstream fio;
     fio.open(search);
-    for(int i = 0 ;i<size-1;i++)
+    for (int i = 0; i < size - 1; i++)
     {
-        if(i == pos)
+        if (i == pos)
         {
             continue;
         }
@@ -414,7 +411,7 @@ void remove_song()
             fio << data_song_playlist[i].song << "," << data_song_playlist[i].album << "," << data_song_playlist[i].artist << "," << data_song_playlist[i].genre << "," << data_song_playlist[i].link << "\n";
         }
     }
-    cout<<"\nSong deleted\n";
+    cout << "\nSong deleted\n";
     fio.close();
 }
 void edit_record_menu()
@@ -764,7 +761,6 @@ lbl3:
     else
     {
         search = userplaylist + search + ".csv";
-        cout << search;
         while (!fin.eof())
         {
             getline(fin, playlistName);
@@ -781,8 +777,6 @@ lbl3:
         return;
     }
     size = readFile(data, search);
-    cout<<endl;
-    cout<<size<<endl;
 lbl1:
     string link = "open " + data[i].link + " alias MyFile";
     int a = 0;
@@ -810,7 +804,7 @@ lbl:
         mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
         break;
     case 3:
-        if (i + 1 < size)
+        if (i + 1 < (size - 1))
         {
             i = i + 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
@@ -818,7 +812,10 @@ lbl:
         }
         else
         {
+            cout << "in else" << endl;
             i = 0;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
         }
         break;
     case 4:
@@ -831,6 +828,8 @@ lbl:
         else
         {
             i = size - 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
         }
         break;
     case 5:
