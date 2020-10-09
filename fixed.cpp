@@ -514,6 +514,7 @@ void play_playlist()
     int choice, i = 0, size;
     Info data[100];
     size = readFile(data);
+    
 
 lbl1:
     cout << size << "\n"
@@ -532,7 +533,7 @@ lbl:
         mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
         break;
     case 3:
-        if ((i + 1) <= size)
+        if ((i + 1) < size)
         {
             i = i + 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
