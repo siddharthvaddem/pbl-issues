@@ -302,8 +302,10 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].album = temp[i].album;
                     filtered[i].artist = read;
-                    getline(fin, temp[i].genre, '\n');
+                    getline(fin, temp[i].genre,',');
+                    getline(fin,temp[i].link,'\n');
                     filtered[i].genre = temp[i].genre;
+                    filtered[i].link=temp[i].link;
                     if (a == 0)
                     {
                         cout << " Results for " << filtered[i].artist << "-" << endl;
@@ -359,10 +361,12 @@ lbl2:
                     filtered[i].song = read;
                     getline(fin, temp[i].album, ',');
                     getline(fin, temp[i].artist, ',');
-                    getline(fin, temp[i].genre, '\n');
+                    getline(fin, temp[i].genre,',');
+                    getline(fin, temp[i].link, '\n');
                     filtered[i].album = temp[i].album;
                     filtered[i].artist = temp[i].artist;
                     filtered[i].genre = temp[i].genre;
+                    filtered[i].link=temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for " << filtered[i].song << "- " << endl;
@@ -420,9 +424,11 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].album = read;
                     getline(fin, temp[i].artist, ',');
-                    getline(fin, temp[i].genre, '\n');
+                    getline(fin, temp[i].genre,',');
+                    getline(fin, temp[i].link, '\n');
                     filtered[i].artist = temp[i].artist;
                     filtered[i].genre = temp[i].genre;
+                    filtered[i].link=temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for the album " << filtered[i].album << "- " << endl;
@@ -463,7 +469,8 @@ lbl2:
                 getline(fin, temp[i].song, ',');
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
-                getline(fin, read, '\n');
+                getline(fin, read,',');
+                getline(fin,temp[i].link,'\n');
                 for (auto &c : read)
                 {
                     c = tolower(c);
@@ -479,6 +486,7 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].artist = temp[i].artist;
                     filtered[i].album = temp[i].album;
+                    filtered[i].link= temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for the genre " << filtered[i].genre << "- " << endl;
