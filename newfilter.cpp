@@ -707,13 +707,13 @@ lbl2:
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
                 getline(fin, read,',');
-                getline(fin,temp[i].link,'\n');
                 for (auto &c : read)
                 {
                     c = tolower(c);
                 }
                 if (read == search)
                 {
+                    getline(fin,temp[i].link,'\n');
                     for (auto &c : read)
                     {
                         c = toupper(c);
@@ -950,7 +950,7 @@ lbl:
         }
         break;
     case 4:
-        if (i - 1 >= 0)
+        if (i-1>=0)
         {
             i = i - 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);

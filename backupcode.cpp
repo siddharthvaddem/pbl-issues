@@ -25,6 +25,7 @@ typedef struct login
 } Login;
 
 Login details[100];
+int arr[100];
 
 struct playlist : info //Inheriting from info structure
 {
@@ -40,6 +41,9 @@ int readFile(Info data[], string filename);
 void display_all_records(Info data[], int size);
 void play_playlist_menu();
 void filter_records();
+void shuffle();
+void randomize(int arr[],int);
+void swap(int arr[],int,int);
 string signin();
 string signup();
 void addLoginData(string, string, string);
@@ -703,7 +707,7 @@ lbl2:
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
                 getline(fin, read,',');
-                getline(fin,temp[i].link,'\n');
+                
                 for (auto &c : read)
                 {
                     c = tolower(c);
@@ -716,6 +720,7 @@ lbl2:
                     }
                     notfound = false;
                     filtered[i].genre = read;
+                    getline(fin,temp[i].link,'\n');
                     filtered[i].song = temp[i].song;
                     filtered[i].artist = temp[i].artist;
                     filtered[i].album = temp[i].album;
@@ -749,6 +754,123 @@ lbl2:
         cout << "invalid input" << endl;
     }
     goto lbl2;
+}
+void shuffle()
+{
+
+lbl3:
+    int choice, i = 0;
+    Info data[100];
+    bool notfound = true;
+    cin.clear();
+    cin.sync();
+    string search, playlistName, filename = userplaylist + ".csv";
+    cout << "enter the name of the playlist you want to play:";
+    getline(cin, search);
+     search = userplaylist + search + ".csv";
+    int size = readFile(data,search);
+    size=size-1;
+    cout<<size<<endl;
+    int count=0;
+
+    for(int i=0;i<size;i++)
+    {
+        arr[i]=count;
+        count++;
+    }
+    randomize(arr,size);
+    
+
+    lbl1:
+    for (int i = 0; i < size; i++) 
+		cout << arr[i] << " "; 
+	cout << "\n";
+    string link = "open " + data[arr[i]].link + " alias MyFile";
+    int a = 0;
+    mciSendStringA(link.c_str(), NULL, 0, 0);
+    mciSendString(TEXT("play MyFile "), NULL, 0, 0);
+lbl:
+    if (a == 0)
+    {
+        cout << "Options\n1>pause\n2>Play next song\n3>Play previous song\n4>Choose another playlist\n5>stop\nEnter your choice:";
+        cin >> choice;
+        choice = choice + 1;
+    }
+    else
+    {
+        cout << "Options\n1>continue\n2>pause\n3>Play next song\n4>Play previous song\n5>Choose another playlist\n6>stop\nEnter your choice:";
+        cin >> choice;
+    }
+    switch (choice)
+    {
+    case 1:
+        mciSendString(TEXT("play MyFile "), NULL, 0, 0);
+        break;
+    case 2:
+        a++;
+        mciSendString(TEXT("pause MyFile "), NULL, 0, 0);
+        break;
+    case 3:
+        if (i + 1 <= (size - 1))
+        {
+            i = i + 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            
+            goto lbl1;
+        }
+        else
+        {
+            cout << "in else" << endl;
+            i = 0;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            randomize(arr,size);
+            goto lbl1;
+        }
+        break;
+    case 4:
+        if (i - 1 >= 0)
+        {
+            i = i - 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        else
+        {
+            i = size - 1;
+            mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+            goto lbl1;
+        }
+        break;
+    case 5:
+        mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+        goto lbl3;
+        break;
+    case 6:
+        mciSendString(TEXT("close MyFile"), NULL, 0, 0);
+        return;
+    default:
+        cout << "Invalid choice" << endl;
+    }
+    goto lbl;
+ 
+
+
+}
+
+void randomize(int arr[],int size)
+{
+    srand(time(NULL));
+    for(int i=size-1;i>0;i--)
+    {
+        int j=rand()%(i+1);
+        swap(arr,i,j);
+    }
+}
+void swap(int arr[],int i,int j)
+{
+    int temp=arr[i];
+    arr[i]=arr[j];
+    arr[j]=temp;
 }
 void play_playlist()
 {
@@ -786,6 +908,7 @@ lbl3:
         return;
     }
     size = readFile(data, search);
+    
 lbl1:
     string link = "open " + data[i].link + " alias MyFile";
     int a = 0;
@@ -872,6 +995,7 @@ lbl:
         break;
     case 2: //subfunction2
         cout << "Shuffle play" << endl;
+        shuffle();
         break;
     case 3:
         return;
