@@ -142,6 +142,7 @@ lbl:
         break;
     default:
         cout << "INVALID INPUT" << endl;
+        sleep(1);
     }
     goto lbl;
     return 0;
@@ -258,6 +259,7 @@ lbl:
         break;
     default:
         cout << "INVALID INPUT";
+        sleep(1);
     }
     goto lbl;
 }
@@ -278,6 +280,7 @@ void insert_song()
     if (!fin)
     {
         cout << "FILE COULDN'T BE OPENED!!" << endl;
+        sleep(1);
     }
     else
     {
@@ -299,6 +302,7 @@ void insert_song()
     if (notfound)
     {
         cout << "PLAYLIST NOT FOUND, PLEASE CREATE PLAYLIST AND THEN TRY!!" << endl;
+        sleep(1);
         return;
     }
     fin.close();
@@ -309,6 +313,7 @@ lblelse:
     if (!fio)
     {
         cout << "ERROR IN OPENING FILE!!" << endl;
+        sleep(1);
     }
     else
     {
@@ -342,6 +347,7 @@ lblelse:
                     if (songname == song_name_playlist)
                     {
                         cout << "SONG ALREADY EXISTS IN PLAYLIST ,ADD A DIFFERENT SONG!!" << endl;
+                        sleep(1);
                         songnotfound = false;
                         fio.close();
                         goto lblelse;
@@ -376,7 +382,9 @@ void remove_song()
     if (!fin)
     {
         cout << "FILE COULDN'T BE OPENED!!" << endl;
+        sleep(1);
     }
+    
     else
     {
         search = userplaylist + search + ".csv";
@@ -397,6 +405,7 @@ void remove_song()
     if (notfound)
     {
         cout << "PLAYLIST NOT FOUND , CREATE ONE AND TRY AGAIN!!" << endl;
+        sleep(1);
         return;
     }
     fin.close();
@@ -429,6 +438,7 @@ void remove_song()
     if (songnotfound)
     {
         cout << "SONG NOT FOUND IN THE PLAYLIST!!" << endl;
+        sleep(1);
         return;
     }
     ofstream fio;
@@ -553,6 +563,7 @@ lbl2:
         if (!fin)
         {
             cout << "FILE COULDN'T BE OPENED" << endl;
+            sleep(1);
         }
         else
         {
@@ -609,6 +620,7 @@ lbl2:
             if (notfound)
             {
                 cout << "NO RESULTS FOUND" << endl;
+                sleep(1);
             }
         }
         fin.close();
@@ -619,6 +631,7 @@ lbl2:
         if (!fin)
         {
             cout << "FILE COULDN'T BE OPENED" << endl;
+            sleep(1);
         }
         else
         {
@@ -674,6 +687,7 @@ lbl2:
             if (notfound)
             {
                 cout << "NO RESULTS FOUND" << endl;
+                sleep(1);
             }
         }
         fin.close();
@@ -685,6 +699,7 @@ lbl2:
         if (!fin)
         {
             cout << "FILE COULDN'T BE OPENED" << endl;
+            sleep(1);
         }
         else
         {
@@ -739,6 +754,7 @@ lbl2:
             if (notfound)
             {
                 cout << "NO RESULTS FOUND" << endl;
+                sleep(1);
             }
         }
         fin.close();
@@ -749,6 +765,7 @@ lbl2:
         if (!fin)
         {
             cout << "FILE COULDN'T BE OPENED" << endl;
+            sleep(1);
         }
         else
         {
@@ -802,6 +819,7 @@ lbl2:
             if (notfound)
             {
                 cout << "NO RESULTS FOUND" << endl;
+                sleep(1);
             }
         }
         fin.close();
@@ -812,6 +830,7 @@ lbl2:
         break;
     default:
         cout << "INVALID INPUT" << endl;
+        sleep(1);
     }
     goto lbl2;
 }
@@ -911,6 +930,7 @@ lbl:
         return;
     default:
         cout << "INVALID CHOICE" << endl;
+        sleep(1);
     }
     goto lbl;
  
@@ -949,6 +969,7 @@ lbl3:
     if (!fin)
     {
         cout << "FILE COULDN'T BE OPENED!!" << endl;
+        sleep(1);
     }
     else
     {
@@ -966,6 +987,7 @@ lbl3:
     if (notfound)
     {
         cout << "PLAYLIST NOT FOUND,PLEASE CREATE ONE AND TRY AGAIN!!" << endl;
+        sleep(1);
         return;
     }
     size = readFile(data, search);
@@ -1036,6 +1058,7 @@ lbl:
         return;
     default:
         cout << "INVALID CHOICE" << endl;
+        sleep(1);
     }
     goto lbl;
 }
@@ -1071,12 +1094,14 @@ lbl:
 
     default:
         cout << "INVALID INPUT" << endl;
+        sleep(1);
     }
     goto lbl;
 }
 
 void display_all_records(Info data[], int size)
 {
+    system("CLS");
     cout << "SONG" << setw(30) << "ALBUM" << setw(30) << "ARTIST" << setw(30) << "GENRE" << endl;
     for (int i = 0; i < size; i++)
     {
@@ -1095,6 +1120,7 @@ int readFile(Info data[], string filename)
     if (!fin)
     {
         cout << "FILE COULDN'T BE OPENED" << endl;
+        sleep(1);
     }
     else
     {
@@ -1248,6 +1274,7 @@ int readLoginData(Login details[])
     if (!fin)
     {
         cout << "FILE COUDLN'T BE OPENED" << endl;
+        sleep(1);
     }
     else
     {
