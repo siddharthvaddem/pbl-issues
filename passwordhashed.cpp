@@ -1173,6 +1173,8 @@ l1:
         confirmpass = "";
         goto l1;
     }
+    for(int i = 0; i <password.length(); i++)
+        password.at(i) = password.at(i) + password.length();
     string filename = username;
     addLoginData(username, password, filename);
     userplaylist = signin();
@@ -1189,7 +1191,8 @@ label:
     cin.clear();
     cin.sync();
     string username, password;
-    
+    password="";
+    char hash;
     system("color F4");
     cout << "ENTER LOGIN CREDENTIALS" << endl;
     cout << "USERNAME:";
@@ -1203,7 +1206,24 @@ label:
             usernotfound = false;
         retry:
             cout << "PASSWORD:";
-            getline(cin, password);
+            hash= _getch();
+            while(hash!=13)//this is for enter
+            {
+                if(hash==8)
+                {
+                    password.pop_back();
+                    putch('\b');
+                    putch(' ');
+                    putch('\b');  
+                    goto back;
+                }
+                password.push_back(hash);
+                cout<<"*";
+                back:
+                hash=_getch();
+            }
+            for(int i = 0; i <password.length(); i++)
+                password.at(i) = password.at(i) + password.length();
             if (details[i].password == password)
             {
                 system("color 2E");
