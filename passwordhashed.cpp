@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <string>
 #include <Windows.h>
-#include<unistd.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -43,8 +43,8 @@ void display_all_records(Info data[], int size);
 void play_playlist_menu();
 void filter_records();
 void shuffle();
-void randomize(int arr[],int);
-void swap(int arr[],int,int);
+void randomize(int arr[], int);
+void swap(int arr[], int, int);
 string signin();
 string signup();
 void addLoginData(string, string, string);
@@ -55,11 +55,11 @@ int main()
     Info data[100];
     int loginchoice;
     system("color B5");
-    cout<<"OPENING APPLICATION....."<<endl;
+    cout << "OPENING APPLICATION....." << endl;
     sleep(2);
 login:
     system("CLS");
-    
+
     system("color F1");
     cout << "WELCOME TO ZUNE " << endl;
     cout << "SIGN IN TO CONTINUE- " << endl;
@@ -69,7 +69,7 @@ login:
 label:
     cout << "ENTER YOUR CHOICE- ";
     cin >> loginchoice;
-     system("CLS");
+    system("CLS");
     cout << endl;
     switch (loginchoice)
     {
@@ -80,9 +80,9 @@ label:
         userplaylist = signup();
         break;
     case 3:
-    system("color B5");
+        system("color B5");
         system("CLS");
-        cout<<"CLOSING APPLICATION......";
+        cout << "CLOSING APPLICATION......";
         sleep(2);
         exit(0);
         break;
@@ -116,7 +116,7 @@ lbl:
         edit_record_menu();
         break;
     case 4: //function4
-        
+
         play_playlist_menu();
         system("color F4");
         break;
@@ -136,7 +136,7 @@ lbl:
     case 6: //function5
         system("CLS");
         system("color B5");
-        cout<<"CLOSING APPLICATION...";
+        cout << "CLOSING APPLICATION...";
         sleep(2);
         exit(0);
         break;
@@ -237,7 +237,6 @@ lbl:
         break;
     case 3:
         song = head;
-
         while (song != NULL)
         {
             cout << song->song << "," << song->album << "," << song->artist << "," << song->genre << "\n";
@@ -251,7 +250,7 @@ lbl:
         cout << "SAVING PLAYLIST....." << endl;
         sleep(1);
         system("color 2E");
-        cout<<"PLAYLIST SAVED"<<endl;
+        cout << "PLAYLIST SAVED" << endl;
         sleep(2);
         system("color F4");
         system("CLS");
@@ -384,7 +383,7 @@ void remove_song()
         cout << "FILE COULDN'T BE OPENED!!" << endl;
         sleep(1);
     }
-    
+
     else
     {
         search = userplaylist + search + ".csv";
@@ -498,7 +497,8 @@ lbl:
     system("CLS");
     int subchoice;
     int size;
-    cout<<endl<<endl;
+    cout << endl
+         << endl;
     cout << "DISPLAY RECORDS" << endl;
     cout << "1>DISPLAY ALL SONGS" << endl;
     cout << "2>FILTER SONGS AND SEARCH" << endl;
@@ -595,10 +595,10 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].album = temp[i].album;
                     filtered[i].artist = read;
-                    getline(fin, temp[i].genre,',');
-                    getline(fin,temp[i].link,'\n');
+                    getline(fin, temp[i].genre, ',');
+                    getline(fin, temp[i].link, '\n');
                     filtered[i].genre = temp[i].genre;
-                    filtered[i].link=temp[i].link;
+                    filtered[i].link = temp[i].link;
                     if (a == 0)
                     {
                         cout << " Results for " << filtered[i].artist << "-" << endl;
@@ -614,7 +614,6 @@ lbl2:
                     getline(fin, trash, '\n');
                 }
                 i++;
-                
             }
             sleep(3);
             if (notfound)
@@ -661,12 +660,12 @@ lbl2:
                     filtered[i].song = read;
                     getline(fin, temp[i].album, ',');
                     getline(fin, temp[i].artist, ',');
-                    getline(fin, temp[i].genre,',');
+                    getline(fin, temp[i].genre, ',');
                     getline(fin, temp[i].link, '\n');
                     filtered[i].album = temp[i].album;
                     filtered[i].artist = temp[i].artist;
                     filtered[i].genre = temp[i].genre;
-                    filtered[i].link=temp[i].link;
+                    filtered[i].link = temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for " << filtered[i].song << "- " << endl;
@@ -681,7 +680,6 @@ lbl2:
                     getline(fin, trash, '\n');
                 }
                 i++;
-                
             }
             sleep(3);
             if (notfound)
@@ -730,11 +728,11 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].album = read;
                     getline(fin, temp[i].artist, ',');
-                    getline(fin, temp[i].genre,',');
+                    getline(fin, temp[i].genre, ',');
                     getline(fin, temp[i].link, '\n');
                     filtered[i].artist = temp[i].artist;
                     filtered[i].genre = temp[i].genre;
-                    filtered[i].link=temp[i].link;
+                    filtered[i].link = temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for the album " << filtered[i].album << "- " << endl;
@@ -748,7 +746,6 @@ lbl2:
                     getline(fin, trash, '\n');
                 }
                 i++;
-             
             }
             sleep(3);
             if (notfound)
@@ -781,14 +778,14 @@ lbl2:
                 getline(fin, temp[i].song, ',');
                 getline(fin, temp[i].album, ',');
                 getline(fin, temp[i].artist, ',');
-                getline(fin, read,',');
+                getline(fin, read, ',');
                 for (auto &c : read)
                 {
                     c = tolower(c);
                 }
                 if (read == search)
                 {
-                    getline(fin,temp[i].link,'\n');
+                    getline(fin, temp[i].link, '\n');
                     for (auto &c : read)
                     {
                         c = toupper(c);
@@ -798,7 +795,7 @@ lbl2:
                     filtered[i].song = temp[i].song;
                     filtered[i].artist = temp[i].artist;
                     filtered[i].album = temp[i].album;
-                    filtered[i].link= temp[i].link;
+                    filtered[i].link = temp[i].link;
                     if (a == 0)
                     {
                         cout << "Results for the genre " << filtered[i].genre << "- " << endl;
@@ -812,7 +809,7 @@ lbl2:
                 {
                     getline(fin, trash, '\n');
                 }
-                
+
                 i++;
             }
             sleep(3);
@@ -846,24 +843,23 @@ lbl3:
     string search, playlistName, filename = userplaylist + ".csv";
     cout << "ENTER THE NAME OF THE PLAYLIST YOU WANT TO PLAY:";
     getline(cin, search);
-     search = userplaylist + search + ".csv";
-    int size = readFile(data,search);
-    size=size-1;
-    cout<<size<<endl;
-    int count=0;
+    search = userplaylist + search + ".csv";
+    int size = readFile(data, search);
+    size = size - 1;
+    cout << size << endl;
+    int count = 0;
 
-    for(int i=0;i<size;i++)
+    for (int i = 0; i < size; i++)
     {
-        arr[i]=count;
+        arr[i] = count;
         count++;
     }
-    randomize(arr,size);
-    
+    randomize(arr, size);
 
-    lbl1:
-    for (int i = 0; i < size; i++) 
-		cout << arr[i] << " "; 
-	cout << "\n";
+lbl1:
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << " ";
+    cout << "\n";
     string link = "open " + data[arr[i]].link + " alias MyFile";
     int a = 0;
     mciSendStringA(link.c_str(), NULL, 0, 0);
@@ -895,7 +891,7 @@ lbl:
         {
             i = i + 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
-            
+
             goto lbl1;
         }
         else
@@ -903,7 +899,7 @@ lbl:
             cout << "-.-.-" << endl;
             i = 0;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
-            randomize(arr,size);
+            randomize(arr, size);
             goto lbl1;
         }
         break;
@@ -933,25 +929,22 @@ lbl:
         sleep(1);
     }
     goto lbl;
- 
-
-
 }
 
-void randomize(int arr[],int size)
+void randomize(int arr[], int size)
 {
     srand(time(NULL));
-    for(int i=size-1;i>0;i--)
+    for (int i = size - 1; i > 0; i--)
     {
-        int j=rand()%(i+1);
-        swap(arr,i,j);
+        int j = rand() % (i + 1);
+        swap(arr, i, j);
     }
 }
-void swap(int arr[],int i,int j)
+void swap(int arr[], int i, int j)
 {
-    int temp=arr[i];
-    arr[i]=arr[j];
-    arr[j]=temp;
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
 void play_playlist()
 {
@@ -991,7 +984,7 @@ lbl3:
         return;
     }
     size = readFile(data, search);
-    
+
 lbl1:
     string link = "open " + data[i].link + " alias MyFile";
     int a = 0;
@@ -999,9 +992,10 @@ lbl1:
     mciSendString(TEXT("play MyFile "), NULL, 0, 0);
 lbl:
     system("CLS");
+    cout << "NOW playing" << data[i].song << "by" << data[i].artist << "....." << endl;
     if (a == 0)
     {
-        
+
         cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:";
         cin >> choice;
         choice = choice + 1;
@@ -1036,7 +1030,7 @@ lbl:
         }
         break;
     case 4:
-        if (i-1>=0)
+        if (i - 1 >= 0)
         {
             i = i - 1;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
@@ -1044,7 +1038,7 @@ lbl:
         }
         else
         {
-            i = size - 1;
+            i = size - 2;
             mciSendString(TEXT("close MyFile"), NULL, 0, 0);
             goto lbl1;
         }
@@ -1067,7 +1061,7 @@ void play_playlist_menu()
 {
 lbl:
     system("CLS");
-    system("color 0B" );
+    system("color 0B");
     int subchoice;
     cout << "PLAY" << endl;
     cout << "1>PLAY FROM PLAYLIST" << endl;
@@ -1095,6 +1089,7 @@ lbl:
     default:
         cout << "INVALID INPUT" << endl;
         sleep(1);
+        break;
     }
     goto lbl;
 }
@@ -1109,7 +1104,6 @@ void display_all_records(Info data[], int size)
         sleep(0.5);
     }
     sleep(7);
-    
 }
 int readFile(Info data[], string filename)
 {
@@ -1173,7 +1167,7 @@ l1:
         confirmpass = "";
         goto l1;
     }
-    for(int i = 0; i <password.length(); i++)
+    for (int i = 0; i < password.length(); i++)
         password.at(i) = password.at(i) + password.length();
     string filename = username;
     addLoginData(username, password, filename);
@@ -1191,7 +1185,7 @@ label:
     cin.clear();
     cin.sync();
     string username, password;
-    password="";
+    password = "";
     char hash;
     system("color F4");
     cout << "ENTER LOGIN CREDENTIALS" << endl;
@@ -1206,29 +1200,29 @@ label:
             usernotfound = false;
         retry:
             cout << "PASSWORD:";
-            hash= _getch();
-            while(hash!=13)//this is for enter
+            hash = _getch();
+            while (hash != 13) //this is for enter
             {
-                if(hash==8)
+                if (hash == 8)
                 {
                     password.pop_back();
                     putch('\b');
                     putch(' ');
-                    putch('\b');  
+                    putch('\b');
                     goto back;
                 }
                 password.push_back(hash);
-                cout<<"*";
-                back:
-                hash=_getch();
+                cout << "*";
+            back:
+                hash = _getch();
             }
-            for(int i = 0; i <password.length(); i++)
+            for (int i = 0; i < password.length(); i++)
                 password.at(i) = password.at(i) + password.length();
             if (details[i].password == password)
             {
                 system("color 2E");
-                cout<<endl;
-                cout<<"LOGIN SUCCESSFUL";
+                cout << endl;
+                cout << "LOGIN SUCCESSFUL";
                 sleep(2);
                 cout << endl;
                 system("CLS");
@@ -1239,7 +1233,7 @@ label:
 
             else
             {
-                
+
                 sleep(1);
                 system("CLS");
                 system("color C0");
@@ -1247,7 +1241,7 @@ label:
                 sleep(2);
                 system("color F4");
                 system("CLS");
-            
+
                 goto retry;
             }
         }
