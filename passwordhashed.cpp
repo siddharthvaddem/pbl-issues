@@ -858,26 +858,46 @@ lbl3:
     randomize(arr, size);
 
 lbl1:
-    for (int i = 0; i < size; i++)
-        cout << arr[i] << " ";
-    cout << "\n";
+    
     string link = "open " + data[arr[i]].link + " alias MyFile";
     int a = 0;
     mciSendStringA(link.c_str(), NULL, 0, 0);
     mciSendString(TEXT("play MyFile "), NULL, 0, 0);
 lbl:
     system("CLS");
-    cout << "NOW playing  " << data[arr[i]].song << " by " << data[arr[i]].artist << "....." << endl;
+    
     if (a == 0)
     {
-        cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:";
-        cin >> choice;
-        choice = choice + 1;
+    cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:"<<endl;
+    cout << "NOW playing  " << data[arr[i]].song << " by " << data[arr[i]].artist<<" ";
+    cout.flush();
+    for (int i = 0; i < 3; i++) 
+    {
+        cout << ".";
+        cout.flush();
+        sleep(1);
+    }
+        cout << "\b\b\b   \b\b\b";
+    
+    cout<<endl;
+    cin >> choice;
+    choice = choice + 1;
     }
     else
     {
-        cout << "Options\n1>CONTINUE\n2>PAUSE\n3>PLAY NEXT SONG\n4>PLAY PREVIOUS SONG\n5>CHOOSE ANOTHER PLAYLIST\n6>STOP\nENTER YOUR CHOICE:";
-        cin >> choice;
+    cout << "Options\n1>CONTINUE\n2>PAUSE\n3>PLAY NEXT SONG\n4>PLAY PREVIOUS SONG\n5>CHOOSE ANOTHER PLAYLIST\n6>STOP\nENTER YOUR CHOICE:"<<endl;
+    cout << "NOW playing  " << data[arr[i]].song << " by " << data[arr[i]].artist<<" ";
+    cout.flush();
+    for (int i = 0; i < 3; i++) 
+    {
+        cout << ".";
+        cout.flush();
+        sleep(1);
+    }
+        
+    cout << "\b\b\b   \b\b\b";
+    cin >> choice;
+        
     }
     switch (choice)
     {
@@ -994,17 +1014,39 @@ lbl1:
     mciSendString(TEXT("play MyFile "), NULL, 0, 0);
 lbl:
     system("CLS");
-    cout << "NOW playing  " << data[i].song << " by " << data[i].artist << "....." << endl;
     if (a == 0)
     {
 
-        cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:";
+        cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:"<<endl;
+        cout << "NOW playing  " << data[i].song << " by " << data[i].artist<<" ";
+        cout.flush();
+        for (int i = 0; i < 3; i++) 
+        {
+             cout << ".";
+             cout.flush();
+             sleep(1);
+        }
+        
+        cout << "\b\b\b   \b\b\b";
+        cout<<endl;
         cin >> choice;
         choice = choice + 1;
     }
     else
     {
-        cout << "Options\n1>CONTINUE\n2>PAUSE\n3>PLAY NEXT SONG\n4>PLAY PREVIOUS SONG\n5>CHOOSE ANOTHER PLAYLIST\n6>STOP\nENTER YOUR CHOICE:";
+        cout << "Options\n1>CONTINUE\n2>PAUSE\n3>PLAY NEXT SONG\n4>PLAY PREVIOUS SONG\n5>CHOOSE ANOTHER PLAYLIST\n6>STOP\nENTER YOUR CHOICE: "<<endl;
+        cout << "NOW playing  " << data[i].song << " by " << data[i].artist<<" ";
+        cout.flush();
+        for (int i = 0; i < 3; i++) 
+        {
+            cout << ".";
+            cout.flush();
+            sleep(1);
+        }
+        
+        cout << "\b\b\b   \b\b\b";
+        cout<<endl;
+    
         cin >> choice;
     }
     switch (choice)
