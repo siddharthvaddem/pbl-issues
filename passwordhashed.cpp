@@ -488,6 +488,7 @@ lbl:
         sleep(1);
         system("CLS");
     }
+
     goto lbl;
 }
 
@@ -866,6 +867,7 @@ lbl1:
     mciSendString(TEXT("play MyFile "), NULL, 0, 0);
 lbl:
     system("CLS");
+    cout << "NOW playing  " << data[arr[i]].song << " by " << data[arr[i]].artist << "....." << endl;
     if (a == 0)
     {
         cout << "Options\n1>PAUSE\n2>PLAY NEXT SONG\n3>PLAY PREVIOUS SONG\n4>CHOOSE ANOTHER PLAYLIST\n5>STOP\nENTER YOUR CHOICE:";
@@ -992,7 +994,7 @@ lbl1:
     mciSendString(TEXT("play MyFile "), NULL, 0, 0);
 lbl:
     system("CLS");
-    cout << "NOW playing" << data[i].song << "by" << data[i].artist << "....." << endl;
+    cout << "NOW playing  " << data[i].song << " by " << data[i].artist << "....." << endl;
     if (a == 0)
     {
 
