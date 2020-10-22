@@ -56,8 +56,18 @@ int main()
     Info data[100];
     int loginchoice;
     system("color B5");
-    cout << "OPENING APPLICATION....." << endl;
-    sleep(2);
+    cout << "OPENING APPLICATION ";
+    for(int j=0;j<2;j++)
+    {
+    for (int i = 0; i < 3; i++)
+        {
+            cout << ".";
+            cout.flush();
+            sleep(1);
+        }
+        cout << "\b\b\b   \b\b\b";
+    }
+
 login:
     system("CLS");
 
@@ -83,8 +93,15 @@ label:
     case 3:
         system("color B5");
         system("CLS");
-        cout << "CLOSING APPLICATION......";
-        sleep(2);
+        cout << "CLOSING APPLICATION";
+            for (int i = 0; i < 3; i++)
+            {
+            cout << ".";
+            cout.flush();
+            sleep(1);
+            }
+            cout << "\b\b\b   \b\b\b";
+        
         exit(0);
         break;
     default:
@@ -249,10 +266,19 @@ lbl:
     case 4:
         write_to_playlist(new_song, name);
         delete new_song;
-        cout << "SAVING PLAYLIST....." << endl;
-        sleep(1);
+        cout << "SAVING PLAYLIST" ;
+         for (int i = 0; i < 3; i++)
+        {
+            cout << ".";
+            cout.flush();
+            sleep(1);
+        }
+        cout << "\b\b\b   \b\b\b";
         system("color 2E");
-        cout << "PLAYLIST SAVED" << endl;
+        system("CLS");
+        
+        cout <<endl;
+        cout<< "PLAYLIST SAVED" << endl;
         sleep(2);
         system("color F4");
         system("CLS");
@@ -1325,7 +1351,7 @@ label:
                 sleep(2);
                 system("color F4");
                 system("CLS");
-
+                password="";
                 goto retry;
             }
         }
